@@ -77,6 +77,12 @@ class ViewController: UIViewController {
         meteor.geometry = SCNSphere(radius: moonRadiusKm * scale)
         meteor.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "meteor")
         meteor.position = location
+        
+        meteor.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.dynamic, shape: SCNPhysicsShape(node: meteor, options: nil))
+        meteor.physicsBody?.isAffectedByGravity = false
+        let power:Float = 0.7
+        meteor.physicsBody?.applyForce(SCNVector3(orientation.x * power, orientation.y * power, orientation.z * power), asImpulse: true)
+        
         sceneView.scene.rootNode.addChildNode(meteor)
     }
 }
