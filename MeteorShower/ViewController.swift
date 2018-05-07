@@ -66,7 +66,18 @@ class ViewController: UIViewController {
     
 
     @IBAction func pressedAddMoon(_ sender: Any) {
+        guard let pointOfView = sceneView.pointOfView else {return}
+        let transform = pointOfView.transform
+        let orientation = SCNVector3(-transform.m31,-transform.m32, -transform.m33)
+        let location = SCNVector3(transform.m41,transform.m42,transform.m43)
+        let currentPositionOfCamera = orientation + location
+        let earthLocation = currentPositionOfCamera + orientation
         
+        let meteor = SCNNode()
+        meteor.geometry = SCNSphere(radius: moonRadiusKm * scale)
+        meteor.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "meteor")
+        meteor.position = location
+        sceneView.scene.rootNode.addChildNode(meteor)
     }
 }
 
